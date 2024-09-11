@@ -1,0 +1,74 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww28600\viewh15080\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+  <meta charset="UTF-8">\
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+  <title>Text to Speech</title>\
+  <style>\
+    body \{\
+      font-family: Arial, sans-serif;\
+      display: flex;\
+      flex-direction: column;\
+      align-items: center;\
+      margin-top: 50px;\
+    \}\
+    textarea \{\
+      width: 300px;\
+      height: 100px;\
+      padding: 10px;\
+    \}\
+    button \{\
+      margin-top: 10px;\
+      padding: 10px 20px;\
+      font-size: 16px;\
+    \}\
+  </style>\
+</head>\
+<body>\
+  <h1>Text to Speech Converter</h1>\
+  <textarea id="textInput" placeholder="Enter text here"></textarea>\
+  <button onclick="convertTextToSpeech()">Convert to Speech</button>\
+  <audio id="audioOutput" controls style="display:none;"></audio>\
+\
+  <script>\
+    async function convertTextToSpeech() \{\
+      const text = document.getElementById('textInput').value;\
+\
+      if (!text) \{\
+        alert('Please enter some text.');\
+        return;\
+      \}\
+\
+      const response = await fetch('https://texttospeech.googleapis.com/v1/text:synthesize?key=\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 AIzaSyCvqXuH1gH7-_Aihwq6itbnnlYZHgX20mA
+\f1 \
+
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 , \{\
+        method: 'POST',\
+        headers: \{\
+          'Content-Type': 'application/json'\
+        \},\
+        body: JSON.stringify(\{\
+          input: \{ text: text \},\
+          voice: \{ languageCode: 'en-US', ssmlGender: 'FEMALE' \},\
+          audioConfig: \{ audioEncoding: 'MP3' \}\
+        \})\
+      \});\
+\
+      const data = await response.json();\
+      const audioContent = data.audioContent;\
+      const audioElement = document.getElementById('audioOutput');\
+      audioElement.src = 'data:audio/mp3;base64,' + audioContent;\
+      audioElement.style.display = 'block';\
+    \}\
+  </script>\
+</body>\
+</html>\
+}
